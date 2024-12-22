@@ -1,0 +1,43 @@
+<?php
+
+/*
+* Entry point for all command line programs.
+* All hooked commands are loaded and the console executes the specified program.
+*/
+
+use Exceptions\UsageException;
+require_once __DIR__ . '/../vendor/autoload.php';
+
+try {
+    $commands = require "Commands/registry.php";
+    $inputCommand = $argv[1] ?? null;
+
+    if ($inputCommand === null) {
+        throw UsageException::noCommandSpecified();
+    }
+
+    foreach ($commands as $commandClass) {
+        $alias = $commandClass::getAlias();
+
+        if ($inputCommand === $alias) {
+            if (in_array('--help', $argv)) {
+                if (false === fwrite(STDOUT, $commandClass::getHelp())) {
+                    throw new \RuntimeException("Failed to write to STDOUT");
+                }
+                exit(0);
+            }
+            else {
+                $command = new $commandClass();
+                $result = $command->execute();
+                exit($result);
+            }
+        }
+    }
+
+    throw UsageException::commandNotFound($inputCommand);
+} catch (\Exception $e) {
+    if (false === fwrite(STDERR, sprintf("Error: %s\n", $e->getMessage()))) {
+        throw new \RuntimeException('Failed to write to STDERR');
+    }
+    exit(1);
+}

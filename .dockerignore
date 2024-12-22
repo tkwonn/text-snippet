@@ -1,0 +1,27 @@
+# Version control
+.git
+.gitignore
+.gitattributes
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Docker related
+.docker
+compose*.yml
+services/
+.dockerignore
+Dockerfile*
+
+# Dependencies
+vendor/
+
+# IDE and editor files
+.idea/
+.vscode/
+
+# Cache and logs
+*.log
+.php-cs-fixer.cache

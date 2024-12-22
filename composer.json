@@ -1,0 +1,19 @@
+{
+    "name": "tk/text-snippet",
+    "description": "A simple text snippet sharing service",
+    "require": {
+        "friendsofphp/php-cs-fixer": "^3.65",
+        "nesbot/carbon": "^3.8"
+    },
+    "autoload": {
+        "psr-4": {
+            "Commands\\": "src/Commands",
+            "Database\\": "src/Database",
+            "Exceptions\\": "src/Exceptions",
+            "Helpers\\": "src/Helpers",
+            "Response\\": "src/Response",
+            "Utils\\": "src/Utils",
+            "Views\\": "src/Views"
+        }
+    }
+}

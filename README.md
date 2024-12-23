@@ -2,8 +2,6 @@
 
 [![GitHub last commit](https://img.shields.io/github/last-commit/tkwonn/text-snippet?color=chocolate)](https://github.com/tkwonn/text-snippet/commits/)
 
-<br>
-
 ## What is this
 
 Similar to Pastebin, this web application allows users to share plain text and code snippets without requiring a user account.
@@ -21,11 +19,16 @@ It's useful in the following situations:
 1. [Demo](#demo)
 2. [Built with](#built-with)
 3. [ER Diagram](#er-diagram)
-4. [Architecture Diagram](#architecture-diagram)
-5. [Features](#features)
-6. [Security Measures](#security-measures)
-7. [CI/CD](#cicd)
-8. [How to use](#how-to-use)
+4. [Cloud Architecture Diagram](#cloud-architecture-diagram)
+5. [Security Measures](#security-measures)
+   1. [HTTP Method Restrictions](#http-method-restrictions)
+   2. [Input Sanitization and Character Escaping](#input-sanitization-and-character-escaping)
+   3. [Rate Limiting for DoS Protection](#rate-limiting-for-dos-protection)
+   4. [Secure URL generation](#secure-url-generation)
+6. [CI/CD](#cicd)
+   1. [Continuous Integration](#continuous-integration)
+   2. [Continuous Deployment](#continuous-deployment)
+7. [How to use](#how-to-use)
 
 <br>
 
@@ -59,11 +62,9 @@ Note: Expired page (cronjobについて)
 
 ![Screenshot 2024-12-22 at 15 04 40](https://github.com/user-attachments/assets/c3f689d7-3e92-46d1-a89b-2ccb407e9cfa)
 
-The `hash_id` column in the `pastes` table is used to generate a unique URL for each snippet when users submit content.   
-The URL format is `https://{domain}/{unique-string}`, where the unique-string value is stored in the database's `hash_id` column. 
-This column has a UNIQUE constraint to ensure each snippet has a distinct URL.  
+The `pastes` table uses a `hash_id` column to uniquely identify each snippet. When a user creates a new paste, `hash_id` is generated with a random, unique string that becomes part of the URL (`https://{domain}/{hash_id}`). A UNIQUE constraint on this column ensures that each paste has a distinct identifier.
 
-The `migrations` table, which contains id and filename columns, is required for our custom-built migration tool. These columns are utilized as a stack to enable database migrations and rollbacks.
+The `migrations` table, which contains `id` and `filename` columns, is required for our custom-built migration tool. This table is utilized as a stack to enable database migrations and rollbacks.
 
 <br>
 
@@ -93,7 +94,6 @@ For testing, `post_max_size` was intentionally set to a low limit (2KB) to verif
 
 - Special characters (`\n`, `\t`, `\'`, `\"`, `\`) are properly escaped/unescaped using PHP's `json_encode()` and `json_decode()` methods.
 - All database inputs are parameterized using `mysqli` prepared statements to prevent SQL injection.
-- Monaco Editor handles the text content as read-only when viewing, preventing XSS attacks.
 - HTML special characters are escaped using `htmlspecialchars()` when displaying titles and metadata.
 
 ### Rate Limiting for DoS Protection
@@ -122,29 +122,31 @@ server {
 }
 ```
 
-In the demonstration video below, I set a test limit of 2 requests per minute to show the rate limiting in action. In production, this will be adjusted to 10 requests per minute to balance between service availability and security.
+In the demonstration video below, I set a test limit of 2 requests per minute to show the rate limiting in action. In production, this will be adjusted to 10 requests per minute (with burst=5) to balance between service availability and security.
 
 https://github.com/user-attachments/assets/f4a1ed0f-2970-4c34-96a1-9cf6d8369c96
 
 ### Secure URL generation
 
-- 暗号学的に安全な乱数を使用
-- 64文字（2の6乗）の文字セットを使用し、効率的なビット使用
-- 8文字で約2.8×10¹⁴の組み合わせ（64⁸）が可能
+The implementation follows cryptographic best practices recommended by [Latacora's Cryptographic Right Answers](https://www.latacora.com/blog/2018/04/03/cryptographic-right-answers/) using PHP's [random_bytes()](https://www.php.net/manual/en/function.random-bytes.php) function, which provides cryptographically secure random values by leveraging the OS's `/dev/urandom`.
 
-生成可能な一意のURL数：
-`64⁸ = 281,474,976,710,656`
+The implementation uses:
+- A character set of 64 characters for URL-safe encoding
+- 8 characters length for the final hash
+- Total possible combinations: 64⁸ = 281,474,976,710,656
+
+With such a large number of possible combinations making collisions extremely unlikely, the implementation simply uses a database UNIQUE constraint without any additional collision handling logic.
 
 <br>
 
 ## CI/CD
 
-### Continuous Integration (CI)
+### Continuous Integration
 
 - Dependency caching using Composer to speed up builds
 - Code quality checks using PHP CS Fixer
 
-### Continuous Deployment (CD)
+### Continuous Deployment
 
 - Secure AWS Authentication using OpenID Connect (short-lived tokens)
 - Minimal IAM permissions to ensure secure cloud role operations

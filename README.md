@@ -61,11 +61,9 @@ Note: Expired page (cronjobについて)
 
 ## ER Diagram
 
-![Screenshot 2024-12-22 at 15 04 40](https://github.com/user-attachments/assets/c3f689d7-3e92-46d1-a89b-2ccb407e9cfa)
+![Screenshot 2024-12-22 at 20 04 31](https://github.com/user-attachments/assets/21fb6989-29f1-43db-be09-ea4fd4ece57c)
 
 When a user creates a new paste, `hash_id` is generated with a random, unique string that becomes part of the URL (`https://{domain}/{hash_id}`). This identifier is stored in the `hash_id` column of the `pastes` table with a UNIQUE constraint to ensure that each paste has a distinct identifier.
-
-The `migrations` table, which contains `id` and `filename` columns, is required for our custom-built migration tool. This table is utilized as a stack to enable database migrations and rollbacks.
 
 ### Data Retention
 

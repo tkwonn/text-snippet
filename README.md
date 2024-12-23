@@ -126,7 +126,7 @@ server {
 }
 ```
 
-In the demonstration video below, I set a test limit of 2 requests per minute to show the rate limiting in action. In production, this will be adjusted to 10 requests per minute (with burst=5) to balance between service availability and security.
+The demonstration video below showcases a test limit of 2 requests per minute to illustrate the rate-limiting functionality. In a production environment, this limit will be adjusted to 10 requests per minute with a burst capacity of 5.
 
 https://github.com/user-attachments/assets/f4a1ed0f-2970-4c34-96a1-9cf6d8369c96
 

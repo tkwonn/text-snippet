@@ -19,6 +19,7 @@ It's useful in the following situations:
 1. [Demo](#demo)
 2. [Built with](#built-with)
 3. [ER Diagram](#er-diagram)
+    1. [Data Retention](#data-retention)
 4. [Cloud Architecture Diagram](#cloud-architecture-diagram)
 5. [Security Measures](#security-measures)
    1. [HTTP Method Restrictions](#http-method-restrictions)
@@ -62,9 +63,14 @@ Note: Expired page (cronjobについて)
 
 ![Screenshot 2024-12-22 at 15 04 40](https://github.com/user-attachments/assets/c3f689d7-3e92-46d1-a89b-2ccb407e9cfa)
 
-The `pastes` table uses a `hash_id` column to uniquely identify each snippet. When a user creates a new paste, `hash_id` is generated with a random, unique string that becomes part of the URL (`https://{domain}/{hash_id}`). A UNIQUE constraint on this column ensures that each paste has a distinct identifier.
+When a user creates a new paste, `hash_id` is generated with a random, unique string that becomes part of the URL (`https://{domain}/{hash_id}`). This identifier is stored in the `hash_id` column of the `pastes` table with a UNIQUE constraint to ensure that each paste has a distinct identifier.
 
 The `migrations` table, which contains `id` and `filename` columns, is required for our custom-built migration tool. This table is utilized as a stack to enable database migrations and rollbacks.
+
+### Data Retention
+
+- The application automatically deletes pastes that are expired (based on the `expired_at` column) using a cron job that runs daily.
+
 
 <br>
 

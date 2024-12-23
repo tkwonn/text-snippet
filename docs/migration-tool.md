@@ -82,7 +82,7 @@ Examples:
 
 ## Implementation Details
 
-The migrations table functions as a stack to manage database migrations and rollbacks. Its structure includes the following columns:
+The `migrations` table functions as a stack to manage database migrations and rollbacks. Its structure includes the following columns:
 - `id`: Auto-incrementing primary key
 - `filename`: Migration file name in format `{YYYY-MM-DD}{UNIX_TIMESTAMP}{FILENAME}.php`
 

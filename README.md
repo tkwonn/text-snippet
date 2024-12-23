@@ -80,7 +80,7 @@ When a user creates a new paste, `hash_id` is generated with a random, unique st
 
 ### HTTP Method Restrictions
 
-The application checks content size before submission. If the content size exceeds the limit, the application will return an error message. This feature prevents users from submitting large amounts of data.
+The application checks content size before submission. If the content size exceeds the limit, the application will return an error message. This feature prevents users from submitting excessively large content.
 
 ```php
 // php ini configuration
@@ -126,7 +126,7 @@ server {
 }
 ```
 
-The demonstration video below showcases a test limit of 2 requests per minute to illustrate the rate-limiting functionality. In a production environment, this limit will be adjusted to 10 requests per minute with a burst capacity of 5.
+For testing, the rate limit was intentionally set to a low value (2 requests per minute) to verify the rate-limiting functionality. In production, the limit is set to 10 requests per minute to accommodate normal API usage while protecting against potential abuse.
 
 https://github.com/user-attachments/assets/f4a1ed0f-2970-4c34-96a1-9cf6d8369c96
 

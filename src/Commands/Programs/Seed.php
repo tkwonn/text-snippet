@@ -15,7 +15,7 @@ class Seed extends AbstractCommand
 
     protected static function getDescription(): string
     {
-        return 'Seeds the database with test data based on the specified seeder classes.';
+        return 'Seeds the database with test data.';
     }
 
     protected static function getExamples(): string

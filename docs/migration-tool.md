@@ -1,6 +1,6 @@
 # Custom Migration Tool
 
-A custom command-line tool for managing database schema and seeding data into the database. Similar to Laravel's migration system, but simplified for this specific application's needs.
+A custom command-line tool for managing database schema and seeding data into the database. 
 
 ## Command Structure
 
@@ -83,15 +83,14 @@ Examples:
 ## Implementation Details
 
 The migrations table functions as a stack to manage database migrations and rollbacks. Its structure includes the following columns:
-- id: Auto-incrementing primary key
-- filename: Migration file name in format `{YYYY-MM-DD}{UNIX_TIMESTAMP}{FILENAME}.php`
+- `id`: Auto-incrementing primary key
+- `filename`: Migration file name in format `{YYYY-MM-DD}{UNIX_TIMESTAMP}{FILENAME}.php`
 
 ![Screenshot 2024-12-22 at 19 37 23](https://github.com/user-attachments/assets/31617b5b-bcde-4880-9bdb-30aec2596886)
 
-When generating a migration file, a boilerplate class is automatically created with `up()` and `down()` methods for applying and rolling back changes, respectively.  
-This functionality is similar to Laravel's make:migration [artisan command](https://laravel.com/docs/7.x/migrations).
+When generating a migration file, a boilerplate class is automatically created with `up()` and `down()` methods for applying and rolling back changes, respectively. This functionality is similar to Laravel's make:migration [artisan command](https://laravel.com/docs/7.x/migrations).
 
-For example, running the command `php console code-gen migration --name CreateUsersTable` will generate the following boilerplate code:
+For example, running the command `php console code-gen migration --name CreateUsersTable` will generate the following boilerplate code.
 ```php
 <?php
 

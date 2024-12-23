@@ -63,7 +63,8 @@ Note: Expired page (cronjobについて)
 
 ![Screenshot 2024-12-22 at 20 04 31](https://github.com/user-attachments/assets/21fb6989-29f1-43db-be09-ea4fd4ece57c)
 
-When a user creates a new paste, `hash_id` is generated with a random, unique string that becomes part of the URL (`https://{domain}/{hash_id}`). This identifier is stored in the `hash_id` column of the `pastes` table with a UNIQUE constraint to ensure that each paste has a distinct identifier.
+When a user creates a new paste, a `hash_id` (a secure random string like "x7Bq9R2p") is generated to serve as a unique identifier. This hash_id is then used in the URL to access the paste: `https://{domain}/{hash_id}`.
+This identifier is stored in the `hash_id` column of the `pastes` table with a UNIQUE constraint to ensure that each paste has a distinct identifier.
 
 ### Data Retention
 
@@ -132,7 +133,8 @@ https://github.com/user-attachments/assets/f4a1ed0f-2970-4c34-96a1-9cf6d8369c96
 
 ### Secure URL generation
 
-The implementation follows cryptographic best practices recommended by [Latacora's Cryptographic Right Answers](https://www.latacora.com/blog/2018/04/03/cryptographic-right-answers/) using PHP's [random_bytes()](https://www.php.net/manual/en/function.random-bytes.php) function, which provides cryptographically secure random values by leveraging the OS's `/dev/urandom`.
+Each paste's URL (`https://{domain}/{hash_id}`) is generated using a cryptographically secure random ID via PHP's `random_bytes()` function.  
+This implementation follows [Latacora's Cryptographic Right Answers](https://www.latacora.com/blog/2018/04/03/cryptographic-right-answers/) and utilizes `/dev/urandom`.
 
 The implementation uses:
 - A character set of 64 characters for URL-safe encoding

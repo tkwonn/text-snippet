@@ -22,6 +22,7 @@ class PublicPastesSeeder extends AbstractSeeder
     public function createRowData(): array
     {
         $rows = [];
+        $baseTime = Carbon::now();
 
         $sampleSnippets = [
             [
@@ -61,14 +62,14 @@ class PublicPastesSeeder extends AbstractSeeder
             ],
         ];
 
-        foreach ($sampleSnippets as $snippet) {
+        foreach ($sampleSnippets as $index => $snippet) {
             $rows[] = [
                 HashIdGenerator::generateHashId(),
                 $snippet['title'],
                 $snippet['content'],
                 $snippet['language'],
                 'public',
-                date('Y-m-d H:i:s'),
+                $baseTime->copy()->addSeconds($index)->format('Y-m-d H:i:s'),
                 '9999-12-31 23:59:59',
             ];
         }

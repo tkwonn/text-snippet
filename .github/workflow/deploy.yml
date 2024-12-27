@@ -1,0 +1,126 @@
+name: deploy to EC2
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'public/**'
+      - 'composer.json'
+      - 'composer.lock'
+      - '.github/workflows/**'
+
+jobs:
+  ####### CI #######
+  lint:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Use PHP 8.3 🛎
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+
+      - name: Validate composer.json and composer.lock 👀
+        run: composer validate --strict
+
+      - name: Get Composer Cache Directory 📂
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache Composer packages 📦
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+            ${{ runner.os }}-
+
+      - name: Install dependencies ⏳
+        run: composer install --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+
+      - name: Run PHP CS Fixer 👀
+        run: vendor/bin/php-cs-fixer fix -v --diff --dry-run
+
+  ####### CD #######
+  deploy:
+    needs: lint
+    runs-on: ubuntu-22.04
+
+    permissions:
+      id-token: write
+      contents: read
+
+    env:
+      ROLE_ARN: arn:aws:iam::${{ secrets.AWS_ID }}:role/${{ secrets.ROLE_NAME }}
+      SESSION_NAME: deploy-${{ github.run_id }}-${{ github.run_attempt }}
+      EC2_INSTANCE_ID: "i-0787bc1994b8b31e1"
+      AWS_REGION: "us-west-2"
+      GITHUB_BRANCH: "${{ github.ref_name }}"
+
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ env.ROLE_ARN }}
+          role-session-name: ${{ env.SESSION_NAME }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Deploy Application 🚀
+        run: |
+          COMMANDS_JSON=$(cat << EOF
+          {
+            "commands": [
+              "set -e",
+              "sudo chown -R ubuntu:ubuntu /home/ubuntu/web/text-snippet",
+              "sudo -u ubuntu bash -c \"cd /home/ubuntu/web/text-snippet && \
+                git pull origin $GITHUB_BRANCH && \
+                composer install --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist && \
+                sudo systemctl restart php8.3-fpm && \
+                sudo systemctl reload nginx\""
+            ]
+          }
+          EOF
+          )
+          
+          # Send SSM Command
+          COMMAND_ID=$(aws ssm send-command \
+            --instance-ids "${{ env.EC2_INSTANCE_ID }}" \
+            --document-name "AWS-RunShellScript" \
+            --comment "Deploy application" \
+            --parameters "$COMMANDS_JSON" \
+            --region "${{ env.AWS_REGION }}" \
+            --timeout-seconds 3600 \
+            --query "Command.CommandId" \
+            --output text)
+          
+          echo "SSM Command ID: $COMMAND_ID"
+          
+          # Wait for the command to finish
+          aws ssm wait command-executed \
+            --command-id "$COMMAND_ID" \
+            --instance-id "${{ env.EC2_INSTANCE_ID }}" \
+            --region "${{ env.AWS_REGION }}" || {
+              echo "SSM command failed or timed out."
+              aws ssm get-command-invocation \
+                --instance-id "${{ env.EC2_INSTANCE_ID }}" \
+                --command-id "$COMMAND_ID" \
+                --region "${{ env.AWS_REGION }}" \
+                --query "StandardErrorContent" \
+                --output text
+              exit 1
+            }
+
+          # Get the command output
+          OUTPUT=$(aws ssm get-command-invocation \
+            --instance-id "${{ env.EC2_INSTANCE_ID }}" \
+            --command-id "$COMMAND_ID" \
+            --region "${{ env.AWS_REGION }}" \
+            --query "StandardOutputContent" \
+            --output text)
+
+          echo "$OUTPUT"

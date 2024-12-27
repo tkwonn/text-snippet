@@ -50,8 +50,8 @@ Note: Expired page (cronjobについて)
 | VM           | Amazon EC2                                                                                             |
 | Web server   | Nginx                                                                                                  |
 | Frontend     | HTML, JavaScript, Bootstrap CSS                                                                        |
-| Backend      | PHP 8.2                                                                                                |
-| Database     | MySQL 8.0                                                                                              |
+| Backend      | PHP 8.3                                                                                                |
+| Database     | Amazon RDS (MySQL 8.0)                                                                                 |
 | Middleware   | [Custom-built migration tool](https://github.com/tkwonn/text-snippet/blob/main/docs/migration-tool.md) |
 | CI/CD        | GitHub Actions                                                                                         |
 | Tools        | Monaco Editor                                                                                          |
@@ -66,14 +66,11 @@ Note: Expired page (cronjobについて)
 When a user creates a new paste, a `hash_id` (a secure random string like "x7Bq9R2p") is generated to serve as a unique identifier. This hash_id is then used in the URL to access the paste: `https://{domain}/{hash_id}`.
 This identifier is stored in the `hash_id` column of the `pastes` table with a UNIQUE constraint to ensure that each paste has a distinct identifier.
 
-### Data Retention
-
-- The application automatically deletes pastes that are expired (based on the `expired_at` column) using a cron job that runs daily.
-
-
 <br>
 
 ## Cloud Architecture Diagram
+
+![Screenshot 2024-12-27 at 4 58 44](https://github.com/user-attachments/assets/e9784e90-423e-4a75-afe9-5816c7b8dfb8)
 
 <br>
 

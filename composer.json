@@ -1,6 +1,7 @@
 {
     "name": "tk/text-snippet",
     "description": "A simple text snippet sharing service",
+    "license": "proprietary",
     "require": {
         "friendsofphp/php-cs-fixer": "^3.65",
         "nesbot/carbon": "^3.8"

@@ -34,6 +34,11 @@ It's useful in the following situations:
 
 ## Demo
 
+https://github.com/user-attachments/assets/32981ce4-cebb-4b1e-be96-f69ac39c033a
+
+The paste is no longer available after the expiration time.
+
+https://github.com/user-attachments/assets/06f831ea-99c5-436a-a176-6b422752ac2b
 
 <br>
 

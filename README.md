@@ -19,7 +19,6 @@ It's useful in the following situations:
 1. [Demo](#demo)
 2. [Built with](#built-with)
 3. [ER Diagram](#er-diagram)
-    1. [Data Retention](#data-retention)
 4. [Cloud Architecture Diagram](#cloud-architecture-diagram)
 5. [Security Measures](#security-measures)
    1. [HTTP Method Restrictions](#http-method-restrictions)
@@ -35,11 +34,6 @@ It's useful in the following situations:
 
 ## Demo
 
-Step1. Create new paste
-
-Step2. Browse paste
-
-Note: Expired page (cronjobについて)
 
 <br>
 
@@ -76,7 +70,7 @@ This identifier is stored in the `hash_id` column of the `pastes` table with a U
 
 ## Security Measures
 
-### HTTP Method Restrictions
+### HTTP Method Restriction
 
 The application checks content size before submission. If the content size exceeds the limit, the application will return an error message. This feature prevents users from submitting excessively large content.
 

@@ -61,7 +61,7 @@ Note: Expired page (cronjobについて)
 
 ## ER Diagram
 
-![Screenshot 2024-12-22 at 20 04 31](https://github.com/user-attachments/assets/21fb6989-29f1-43db-be09-ea4fd4ece57c)
+![Screenshot 2024-12-26 at 19 32 26](https://github.com/user-attachments/assets/dbf15c56-2375-4e86-95a6-358ae3c0f78f)
 
 When a user creates a new paste, a `hash_id` (a secure random string like "x7Bq9R2p") is generated to serve as a unique identifier. This hash_id is then used in the URL to access the paste: `https://{domain}/{hash_id}`.
 This identifier is stored in the `hash_id` column of the `pastes` table with a UNIQUE constraint to ensure that each paste has a distinct identifier.
@@ -91,7 +91,7 @@ max_input_time = 60
 max_execution_time = 30
 ```
 
-![Screenshot 2024-12-21 at 19 14 41](https://github.com/user-attachments/assets/130c5ddb-37d6-49db-a39e-bae0ac512b63)
+![Screenshot 2024-12-21 at 19 14 41](https://github.com/user-attachments/assets/f80156be-14eb-44ba-9f3f-e1bf7a4f3a7a)
 
 For testing, `post_max_size` was intentionally set to a low limit (2KB) to verify the validation functionality. In production, the limit is set to 8MB to accommodate larger code snippets while still protecting against potential abuse.
 
@@ -129,7 +129,7 @@ server {
 
 For testing, the rate limit was intentionally set to a low value (2 requests per minute + no burst) to verify the rate-limiting functionality. In production, the limit is set to 10 requests per minute (+ burst=5 nodelay) to accommodate normal API usage while protecting against potential abuse.
 
-https://github.com/user-attachments/assets/f4a1ed0f-2970-4c34-96a1-9cf6d8369c96
+https://github.com/user-attachments/assets/b9840b95-15ae-49cd-9e4b-5991fbc897ec
 
 ### Secure URL generation
 

@@ -15,8 +15,8 @@ class PublicPastesSeeder extends AbstractSeeder
         ['data_type' => 'string', 'column_name' => 'content'],
         ['data_type' => 'string', 'column_name' => 'language'],
         ['data_type' => 'string', 'column_name' => 'exposure'],
-        ['data_type' => 'Carbon', 'column_name' => 'created_at'],
-        ['data_type' => 'Carbon', 'column_name' => 'expires_at'],
+        ['data_type' => 'string', 'column_name' => 'created_at'],
+        ['data_type' => 'string', 'column_name' => 'expires_at'],
     ];
 
     public function createRowData(): array
@@ -25,19 +25,9 @@ class PublicPastesSeeder extends AbstractSeeder
 
         $sampleSnippets = [
             [
-                'title' => 'Hello World in Python',
-                'content' => "print('Hello, World!')\n\n# This is a simple Python program\nname = input('Enter your name: ')\nprint(f'Hello, {name}!')",
-                'language' => 'python',
-            ],
-            [
-                'title' => 'Simple PHP Function',
-                'content' => "<?php\n\nfunction calculateSum(array \$numbers): int {\n    return array_sum(\$numbers);\n}\n\n\$result = calculateSum([1, 2, 3, 4, 5]);\necho \$result;",
-                'language' => 'php',
-            ],
-            [
-                'title' => 'JavaScript Array Methods',
-                'content' => "const numbers = [1, 2, 3, 4, 5];\n\nconst doubled = numbers.map(num => num * 2);\nconst evens = numbers.filter(num => num % 2 === 0);\nconst sum = numbers.reduce((acc, curr) => acc + curr, 0);\n\nconsole.log({ doubled, evens, sum });",
-                'language' => 'javascript',
+                'title' => 'Docker Compose Example',
+                'content' => "version: '3.8'\n\nservices:\n  app:\n    build: ./app\n    ports:\n      - '8080:80'\n    volumes:\n      - ./app:/var/www/html",
+                'language' => 'yaml',
             ],
             [
                 'title' => 'SQL Query Example',
@@ -55,9 +45,19 @@ class PublicPastesSeeder extends AbstractSeeder
                 'language' => 'html',
             ],
             [
-                'title' => 'Docker Compose Example',
-                'content' => "version: '3.8'\n\nservices:\n  app:\n    build: ./app\n    ports:\n      - '8080:80'\n    volumes:\n      - ./app:/var/www/html",
-                'language' => 'yaml',
+                'title' => 'JavaScript Array Methods',
+                'content' => "const numbers = [1, 2, 3, 4, 5];\n\nconst doubled = numbers.map(num => num * 2);\nconst evens = numbers.filter(num => num % 2 === 0);\nconst sum = numbers.reduce((acc, curr) => acc + curr, 0);\n\nconsole.log({ doubled, evens, sum });",
+                'language' => 'javascript',
+            ],
+            [
+                'title' => 'Simple PHP Function',
+                'content' => "<?php\n\nfunction calculateSum(array \$numbers): int {\n    return array_sum(\$numbers);\n}\n\n\$result = calculateSum([1, 2, 3, 4, 5]);\necho \$result;",
+                'language' => 'php',
+            ],
+            [
+                'title' => 'Hello World in Python',
+                'content' => "print('Hello, World!')\n\n# This is a simple Python program\nname = input('Enter your name: ')\nprint(f'Hello, {name}!')",
+                'language' => 'python',
             ],
         ];
 
@@ -68,8 +68,8 @@ class PublicPastesSeeder extends AbstractSeeder
                 $snippet['content'],
                 $snippet['language'],
                 'public',
-                Carbon::now(),
-                null,
+                date('Y-m-d H:i:s'),
+                '9999-12-31 23:59:59',
             ];
         }
 

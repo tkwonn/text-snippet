@@ -17,7 +17,8 @@ class CreatePastesTable1 implements SchemaMigration
                 language VARCHAR(50) NOT NULL,
                 exposure ENUM("public", "unlisted") NOT NULL,
                 created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                expires_at DATETIME NULL
+                expires_at DATETIME NOT NULL DEFAULT "9999-12-31 23:59:59",
+                INDEX idx_paste_list (exposure, created_at, expires_at)
             );',
         ];
     }

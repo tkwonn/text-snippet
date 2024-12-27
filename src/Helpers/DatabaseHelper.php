@@ -18,6 +18,8 @@ class DatabaseHelper
     private const DEFAULT_TITLE = 'Untitled';
     private const DEFAULT_LANGUAGE = 'plaintext';
     private const DEFAULT_EXPOSURE = 'public';
+    private const DEFAULT_EXPIRATION = 'Never';
+    private const NEVER_EXPIRES = '9999-12-31 23:59:59';
 
     private static function getDb(): MySQLWrapper
     {
@@ -36,7 +38,7 @@ class DatabaseHelper
         string $content,
         ?string $title = self::DEFAULT_TITLE,
         string $language = self::DEFAULT_LANGUAGE,
-        ?string $expiresAt = null,
+        string $expiresAt = self::DEFAULT_EXPIRATION,
         string $exposure = self::DEFAULT_EXPOSURE
     ): array {
         $db = self::getDb();
@@ -100,7 +102,7 @@ class DatabaseHelper
             return null;
         }
 
-        if ($paste['expires_at'] && Carbon::parse($paste['expires_at'])->isPast()) {
+        if (Carbon::parse($paste['expires_at'])->isPast()) {
             return [
                 'expired' => true,
             ];
@@ -113,9 +115,7 @@ class DatabaseHelper
             'language' => $paste['language'],
             'exposure' => $paste['exposure'],
             'created_at' => Carbon::parse($paste['created_at'])->setTimezone(self::TIMEZONE)->format(self::DATETIME_FORMAT),
-            'expires_at' => $paste['expires_at']
-                ? Carbon::parse($paste['expires_at'])->setTimezone(self::TIMEZONE)->format(self::DATETIME_FORMAT)
-                : 'never',
+            'expires_at' => $paste['expires_at'] === self::NEVER_EXPIRES ? 'never' : Carbon::parse($paste['expires_at'])->setTimezone(self::TIMEZONE)->format(self::DATETIME_FORMAT),
             'size' => Formatter::formatBytes($paste['size']),
         ];
     }
@@ -131,7 +131,7 @@ class DatabaseHelper
             'SELECT hash_id, title, language, created_at, expires_at, LENGTH(content) AS size
             FROM pastes
             WHERE exposure = "public"
-            AND (expires_at IS NULL OR expires_at > NOW())
+            AND expires_at > NOW()
             ORDER BY created_at DESC
             LIMIT 10'
         );
@@ -169,8 +169,7 @@ class DatabaseHelper
         $db = self::getDb();
         $stmt = $db->prepare(
             'DELETE FROM pastes
-            WHERE expires_at IS NOT NULL
-            AND expires_at < NOW()'
+            WHERE expires_at < NOW()'
         );
         if (!$stmt) {
             throw new Exception('Failed to prepare statement: ' . $db->error);

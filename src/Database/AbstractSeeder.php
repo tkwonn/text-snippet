@@ -73,16 +73,13 @@ abstract class AbstractSeeder implements Seeder
             $columnName = $this->tableColumns[$i]['column_name'];
 
             if (!isset(static::AVAILABLE_TYPES[$columnDataType])) {
-                throw new InvalidArgumentException(sprintf('The data type %s is not an available data type.', $columnDataType));
+                throw new InvalidArgumentException(sprintf(
+                    'The data type %s is not an available data type.',
+                    $columnDataType
+                ));
             }
 
-            if ($columnDataType === 'Carbon') {
-                // Why: null represents the value never in expiresAt
-                if ($value !== null && !$value instanceof Carbon) {
-                    throw new InvalidArgumentException(sprintf('Value for %s should be an instance of Carbon or null. Here is the current value: %s', $columnName, json_encode($value)));
-                }
-                // Why: get_debug_type will return double instead of float, which is suitable in this case
-            } elseif (get_debug_type($value) !== $columnDataType) {
+            if (get_debug_type($value) !== $columnDataType) {
                 throw new InvalidArgumentException(sprintf('Value for %s should be of type %s. Here is the current value: %s', $columnName, $columnDataType, json_encode($value)));
             }
         }

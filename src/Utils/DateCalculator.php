@@ -8,14 +8,15 @@ use Exception;
 class DateCalculator
 {
     private const DATETIME_FORMAT = 'Y-m-d H:i:s';
+    private const NEVER_EXPIRES = '9999-12-31 23:59:59';
 
     /**
      * @throws Exception When invalid expiration option
      */
-    public static function getExpirationDate(?string $expiresAt): ?string
+    public static function getExpirationDate(string $expiresAt): string
     {
         if ($expiresAt === 'Never') {
-            return null;
+            return self::NEVER_EXPIRES;
         }
 
         return match ($expiresAt) {

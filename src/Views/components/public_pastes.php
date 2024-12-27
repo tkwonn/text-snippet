@@ -27,7 +27,7 @@
             if (data.length === 0) {
                 container.innerHTML = `
                     <div class="list-group-item">
-                        No public pastes available.
+                        No public pastes were found.
                     </div>
                 `;
                 return;

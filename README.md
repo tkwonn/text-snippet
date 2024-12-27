@@ -127,7 +127,7 @@ server {
 }
 ```
 
-For testing, the rate limit was intentionally set to a low value (2 requests per minute) to verify the rate-limiting functionality. In production, the limit is set to 10 requests per minute to accommodate normal API usage while protecting against potential abuse.
+For testing, the rate limit was intentionally set to a low value (2 requests per minute + no burst) to verify the rate-limiting functionality. In production, the limit is set to 10 requests per minute (+ burst=5 nodelay) to accommodate normal API usage while protecting against potential abuse.
 
 https://github.com/user-attachments/assets/f4a1ed0f-2970-4c34-96a1-9cf6d8369c96
 

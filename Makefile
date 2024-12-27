@@ -1,3 +1,4 @@
+include .env
 COMPOSE := docker compose
 CONSOLE := src/console
 
@@ -32,6 +33,9 @@ codegen/seeder:
 		exit 1; \
 	fi
 	$(COMPOSE) exec php php $(CONSOLE) codegen seeder --name $(name)
+
+db/fresh:
+	$(COMPOSE) exec mysql mysql -u$(DATABASE_USER) -p$(DATABASE_USER_PASSWORD) $(DATABASE_NAME) -e "TRUNCATE TABLE $(TABLE_NAME);"
 
 db/migrate:
 	$(COMPOSE) exec php php $(CONSOLE) migrate --init

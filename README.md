@@ -165,7 +165,7 @@ This project uses Docker for local development, making it easy for anyone to run
 
 1. Clone this repository
 ```bash
-git clone https://github.com/yourusername/text-snippet.git
+git clone https://github.com/tkwonn/text-snippet.git
 cd text-snippet
 ```
 

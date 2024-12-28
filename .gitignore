@@ -3,3 +3,4 @@
 vendor/
 .php-cs-fixer.cache
 .env
+docs/architecture.drawio.svg

@@ -144,6 +144,8 @@ With such a large number of possible combinations making collisions extremely un
 
 ## CI/CD
 
+The project uses GitHub Actions to automate testing and deployment workflows with the following configurations:
+
 ### Continuous Integration
 
 - Dependency caching using Composer to speed up builds

@@ -72,7 +72,9 @@ This identifier is stored in the `hash_id` column of the `pastes` table with a U
 
 ![Screenshot 2024-12-27 at 4 58 44](https://github.com/user-attachments/assets/e9784e90-423e-4a75-afe9-5816c7b8dfb8)
 
-![Architecture Diagram](https://github.com/tkwonn/text-snippet/blob/main/docs/snippet.drawio.svg)
+<div align="center">
+  <img src="/docs/snippet.drawio.svg" alt="System Architecture">
+</div>
 
 <br>
 

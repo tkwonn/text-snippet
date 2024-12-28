@@ -22,7 +22,7 @@ It's useful in the following situations:
 3. [ER Diagram](#er-diagram)
 4. [Cloud Architecture Diagram](#cloud-architecture-diagram)
 5. [Security Measures](#security-measures)
-   1. [HTTP Method Restrictions](#http-method-restrictions)
+   1. [HTTP Method Restrictions](#http-method-restriction)
    2. [Input Sanitization and Character Escaping](#input-sanitization-and-character-escaping)
    3. [Rate Limiting for DoS Protection](#rate-limiting-for-dos-protection)
    4. [Secure URL generation](#secure-url-generation)

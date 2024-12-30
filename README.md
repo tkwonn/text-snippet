@@ -19,7 +19,7 @@ It's useful in the following situations:
 
 1. [Demo](#demo)
 2. [Built with](#built-with)
-3. [ER Diagram](#er-diagram)
+3. [Database Schema](#database-schema)
 4. [Cloud Architecture Diagram](#cloud-architecture-diagram)
 5. [Security Measures](#security-measures)
    1. [HTTP Method Restriction](#http-method-restriction)
@@ -59,7 +59,7 @@ https://github.com/user-attachments/assets/06f831ea-99c5-436a-a176-6b422752ac2b
 
 <br>
 
-## ER Diagram
+## Database Schema
 
 ![Screenshot 2024-12-26 at 19 32 26](https://github.com/user-attachments/assets/dbf15c56-2375-4e86-95a6-358ae3c0f78f)
 

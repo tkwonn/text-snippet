@@ -61,10 +61,7 @@ https://github.com/user-attachments/assets/06f831ea-99c5-436a-a176-6b422752ac2b
 
 ## Database Schema
 
-![Screenshot 2024-12-26 at 19 32 26](https://github.com/user-attachments/assets/dbf15c56-2375-4e86-95a6-358ae3c0f78f)
-
-When a user creates a new paste, a `hash_id` (a secure random string like "x7Bq9R2p") is generated to serve as a unique identifier. This hash_id is then used in the URL to access the paste: `https://{domain}/{hash_id}`.
-This identifier is stored in the `hash_id` column of the `pastes` table with a UNIQUE constraint to ensure that each paste has a distinct identifier.
+![CleanShot 2024-12-29 at 21 38 10](https://github.com/user-attachments/assets/a979ceca-a2b7-453b-96fb-c61711bb3cbd)
 
 <br>
 

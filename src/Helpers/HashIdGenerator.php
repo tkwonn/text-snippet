@@ -1,6 +1,6 @@
 <?php
 
-namespace Utils;
+namespace Helpers;
 
 class HashIdGenerator
 {

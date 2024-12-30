@@ -17,6 +17,7 @@ class PastesController
     {
         try {
             $pastes = DatabaseHelper::findRecent();
+
             return new JSONRenderer($pastes);
         } catch (Exception $e) {
             return new JSONRenderer(['error' => $e->getMessage()]);

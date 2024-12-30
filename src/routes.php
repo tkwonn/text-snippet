@@ -11,6 +11,7 @@ return [
     },
     'api/pastes' => function (): HTTPRenderer {
         $controller = new PastesController();
+
         return match ($_SERVER['REQUEST_METHOD']) {
             'GET' => $controller->index(),
             'POST' => $controller->store(),
@@ -19,6 +20,7 @@ return [
     },
     '[a-zA-Z0-9_-]{8}' => function (string $hash): HTTPRenderer {
         $controller = new PastesController();
+
         return $controller->show($hash);
     },
 ];

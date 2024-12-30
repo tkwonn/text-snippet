@@ -11,7 +11,7 @@ return [
         '1 Month' => '1month',
     ],
     'exposure' => [
-        'Public' => 'public',
-        'Unlisted' => 'unlisted',
+        'Public' => 1,
+        'Unlisted' => 0,
     ],
 ];

@@ -30,7 +30,7 @@ require __DIR__ . '/layout/header.php';
                             Expires: <?= htmlspecialchars($paste['expires_at']) ?>
                         </div>
                         <div class="text-muted small">
-                            Exposure: <?= htmlspecialchars($paste['exposure']) ?>
+                            Exposure: <?= htmlspecialchars($paste['is_public']) ?>
                         </div>
                         <div class="text-muted small">
                             Size: <?= htmlspecialchars($paste['size']) ?>

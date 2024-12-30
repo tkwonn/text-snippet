@@ -3,16 +3,19 @@
         <h5 class="card-title mb-0">Public Pastes</h5>
     </div>
     <div class="card-body p-0">
-        <div class="list-group list-group-flush" id="publicPastes">
-            <!-- Dynamically loading pastes -->
-        </div>
+        <div class="list-group list-group-flush" id="publicPastes"></div>
     </div>
 </div>
 
 <script>
     async function loadPublicPastes() {
         try {
-            const response = await fetch('/api/recent-pastes');
+            const response = await fetch('/api/pastes', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
             if (!response.ok) {
                 throw new Error(`Failed to fetch public pastes: ${response.status}`);
             }
@@ -34,7 +37,7 @@
             }
 
             container.innerHTML = data.map(paste => `
-                <a href="/${paste.hash_id}" class="list-group-item list-group-item-action py-2">
+                <a href="/${paste.hash}" class="list-group-item list-group-item-action py-2">
                     <div class="small text-primary mb-1">${paste.title}</div>
                     <div class="d-flex gap-2 align-items-center">
                         <small class="text-muted">${paste.language}</small>

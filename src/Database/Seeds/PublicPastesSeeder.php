@@ -4,17 +4,17 @@ namespace Database\Seeds;
 
 use Carbon\Carbon;
 use Database\AbstractSeeder;
-use Utils\HashIdGenerator;
+use Helpers\HashIdGenerator;
 
 class PublicPastesSeeder extends AbstractSeeder
 {
     protected ?string $tableName = 'pastes';
     protected array $tableColumns = [
-        ['data_type' => 'string', 'column_name' => 'hash_id'],
+        ['data_type' => 'string', 'column_name' => 'hash'],
         ['data_type' => 'string', 'column_name' => 'title'],
         ['data_type' => 'string', 'column_name' => 'content'],
         ['data_type' => 'string', 'column_name' => 'language'],
-        ['data_type' => 'string', 'column_name' => 'exposure'],
+        ['data_type' => 'int', 'column_name' => 'is_public'],
         ['data_type' => 'string', 'column_name' => 'created_at'],
         ['data_type' => 'string', 'column_name' => 'expires_at'],
     ];
@@ -68,7 +68,7 @@ class PublicPastesSeeder extends AbstractSeeder
                 $snippet['title'],
                 $snippet['content'],
                 $snippet['language'],
-                'public',
+                1,
                 $baseTime->copy()->addSeconds($index)->format('Y-m-d H:i:s'),
                 '9999-12-31 23:59:59',
             ];

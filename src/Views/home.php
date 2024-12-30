@@ -123,16 +123,16 @@ require __DIR__ . '/layout/header.php';
             document.getElementById('create-paste').addEventListener('click', async () => {
                 try {
                     const input = {
-                        content: this.editor.getValue(),
                         title: document.getElementById('title').value || 'Untitled',
+                        content: this.editor.getValue(),
                         language: document.getElementById('language-select').value,
+                        isPublic: document.getElementById('exposure-select').value,
                         expiresAt: document.getElementById('expiration-select').value,
-                        exposure: document.getElementById('exposure-select').value
                     };
 
                     this._validateInput(input);
 
-                    const response = await fetch('/api/paste', {
+                    const response = await fetch('/api/pastes', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -149,7 +149,8 @@ require __DIR__ . '/layout/header.php';
                         throw new Error(errorResponse.error);
                     }
                     const data = await response.json();
-                    window.location.href = `/${data.hash_id}`;
+                    console.log(data);
+                    window.location.href = `/${data.hash}`;
                 } catch (error) {
                     this._showError(error.message);
                 }
@@ -160,8 +161,8 @@ require __DIR__ . '/layout/header.php';
             if (!input.content) {
                 throw new Error('You cannot create an empty paste.');
             }
-            if (input.title.length > 255) {
-                throw new Error('Title is too long (maximum is 255 characters)');
+            if (input.title.length > 50) {
+                throw new Error('Title is too long (maximum is 50 characters)');
             }
 
             const inputSize = new Blob([JSON.stringify(input)]).size;

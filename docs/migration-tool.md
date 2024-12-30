@@ -1,8 +1,35 @@
 # Custom Migration Tool
 
-A custom command-line tool for managing database schema and seeding data into the database. 
+A custom database migration and seeding tool built with PHP, providing a command-line interface for managing database schema and test data.
 
-## Command Structure
+## Directory Structure
+
+Below is the relevant directory structure for this migration tool (some files omitted for clarity):
+
+```php
+src/
+├── Commands/
+│   ├── Programs/
+│   │   ├── CodeGeneration.php # Generates boilerplate code
+│   │   ├── Migrate.php # Handles database migrations
+│   │   └── Seed.php # Manages database seeding
+│   ├── AbstractCommand.php # Base class for all commands
+│   ├── Argument.php # Builder class that defines the arguments available for a command.
+│   ├── Command.php # An interface defining the methods that all commands have.
+│   └── registry.php # A registry where commands are registered, and the console reads from these.
+├── Database/
+│   ├── Migrations/ # Directory where all migration files are stored.
+│   │   └── 2021-09-01-1734753349_CreateUsersTable.php
+│   ├── Seeders/ # Directory where all seeder files are stored.
+│   │   └── UserSeeder.php
+│   ├── AbstractSeeder.php # Base class for all seeders
+│   ├── MySQLWrapper.php # OOP wrapper for MySQLi
+│   ├── SchemaMigration.php # An interface that defines the methods that all migration files must implement.
+│   └── Seeder.php # An interface that defines the methods that all seeders must implement.
+└── console # Entry point for all command line programs.
+```
+
+## Command System
 
 All commands are executed through a central entry point (`console`):
 ```bash
@@ -86,12 +113,11 @@ The `migrations` table functions as a stack to manage database migrations and ro
 - `id`: Auto-incrementing primary key
 - `filename`: Migration file name in format `{YYYY-MM-DD}{UNIX_TIMESTAMP}{FILENAME}.php`
 
-![Screenshot 2024-12-22 at 19 37 23](https://github.com/user-attachments/assets/31617b5b-bcde-4880-9bdb-30aec2596886)
-
-When generating a migration file, a boilerplate class is automatically created with `up()` and `down()` methods for applying and rolling back changes, respectively. This functionality is similar to Laravel's make:migration [artisan command](https://laravel.com/docs/7.x/migrations).
+![CleanShot 2024-12-29 at 18 33 48](https://github.com/user-attachments/assets/e11e66c1-fccb-4249-90ee-1648f8f623cd)
 
 For example, running the command `php console code-gen migration --name CreateUsersTable` will generate the following boilerplate code.
 ```php
+// File: src/Database/Migrations/2021-09-01-1734753349_CreateUsersTable.php
 <?php
 
 namespace Database\Migrations;

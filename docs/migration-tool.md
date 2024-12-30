@@ -4,15 +4,15 @@ A custom database migration and seeding tool built with PHP, providing a command
 
 ## Directory Structure
 
-Below is the relevant directory structure for this migration tool (some files omitted for clarity):
+Below is the relevant directory structure for this migration tool (some files omitted for clarity).
 
 ```php
 src/
 ├── Commands/
 │   ├── Programs/
-│   │   ├── CodeGeneration.php # Generates boilerplate code
-│   │   ├── Migrate.php # Handles database migrations
-│   │   └── Seed.php # Manages database seeding
+│   │   ├── CodeGeneration.php
+│   │   ├── Migrate.php
+│   │   └── Seed.php
 │   ├── AbstractCommand.php # Base class for all commands
 │   ├── Argument.php # Builder class that defines the arguments available for a command.
 │   ├── Command.php # An interface defining the methods that all commands have.
@@ -31,7 +31,7 @@ src/
 
 ## Command System
 
-All commands are executed through a central entry point (`console`):
+All commands are executed through a central entry point `console`.
 ```bash
 php console {program} {program_value} {--option1} {option1_value} ... {--optionN} {optionN_value}
 ```
@@ -109,7 +109,7 @@ Examples:
 
 ## Implementation Details
 
-The `migrations` table functions as a stack to manage database migrations and rollbacks. Its structure includes the following columns:
+The `migrations` table works as a stack to manage database migrations and rollbacks. Its structure includes the following columns:
 - `id`: Auto-incrementing primary key
 - `filename`: Migration file name in format `{YYYY-MM-DD}{UNIX_TIMESTAMP}{FILENAME}.php`
 

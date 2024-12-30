@@ -9,11 +9,11 @@
     "autoload": {
         "psr-4": {
             "Commands\\": "src/Commands",
+            "Controllers\\": "src/Controllers",
             "Database\\": "src/Database",
             "Exceptions\\": "src/Exceptions",
             "Helpers\\": "src/Helpers",
             "Response\\": "src/Response",
-            "Utils\\": "src/Utils",
             "Views\\": "src/Views"
         }
     }

@@ -3,7 +3,17 @@
 [![GitHub last commit](https://img.shields.io/github/last-commit/tkwonn/text-snippet?color=chocolate)](https://github.com/tkwonn/text-snippet/commits/)
 [![deploy to EC2](https://github.com/tkwonn/text-snippet/actions/workflows/deploy.yml/badge.svg)](https://github.com/tkwonn/text-snippet/actions/workflows/deploy.yml)
 
-## What is this
+## Table of Contents
+- [About](#-about)
+- [Demo](#-demo)
+- [Built with](#️-built-with)
+- [Database Schema](#️-database-schema)
+- [Cloud Architecture Diagram](#️-cloud-architecture-diagram)
+- [Security Measures](#️-security-measures)
+- [CI/CD](#-cicd)
+- [How to use](#-how-to-use)
+
+## 💡 About
 
 Similar to Pastebin, this web application allows users to share plain text and code snippets without requiring a user account.
 It's useful in the following situations:
@@ -13,27 +23,7 @@ It's useful in the following situations:
 
 **URL**: [text-snippet.taesokkwon.com](https://text-snippet.taesokkwon.com)
 
-<br>
-
-## Table of Contents
-
-1. [Demo](#demo)
-2. [Built with](#built-with)
-3. [Database Schema](#database-schema)
-4. [Cloud Architecture Diagram](#cloud-architecture-diagram)
-5. [Security Measures](#security-measures)
-   1. [HTTP Method Restriction](#http-method-restriction)
-   2. [Input Sanitization and Character Escaping](#input-sanitization-and-character-escaping)
-   3. [Rate Limiting for DoS Protection](#rate-limiting-for-dos-protection)
-   4. [Secure URL generation](#secure-url-generation)
-6. [CI/CD](#cicd)
-   1. [Continuous Integration](#continuous-integration)
-   2. [Continuous Deployment](#continuous-deployment)
-7. [How to use](#how-to-use)
-
-<br>
-
-## Demo
+## 🎨 Demo
 
 https://github.com/user-attachments/assets/32981ce4-cebb-4b1e-be96-f69ac39c033a
 
@@ -41,9 +31,7 @@ The paste is no longer available after the expiration time.
 
 https://github.com/user-attachments/assets/06f831ea-99c5-436a-a176-6b422752ac2b
 
-<br>
-
-## Built with
+## 🏗️ Built with
 
 | **Category** | **Technology**                                                                                         |
 |--------------|--------------------------------------------------------------------------------------------------------|
@@ -55,23 +43,17 @@ https://github.com/user-attachments/assets/06f831ea-99c5-436a-a176-6b422752ac2b
 | Middleware   | [Custom-built migration tool](https://github.com/tkwonn/text-snippet/blob/main/docs/migration-tool.md) |
 | CI/CD        | GitHub Actions                                                                                         |
 | Tools        | Monaco Editor                                                                                          |
-| Container    | Docker (only for local development)                                                                    |
+| Container    | Docker (for local development)                                                                    |
 
-<br>
-
-## Database Schema
+## 🗄️ Database Schema
 
 ![CleanShot 2024-12-29 at 21 38 10](https://github.com/user-attachments/assets/a979ceca-a2b7-453b-96fb-c61711bb3cbd)
 
-<br>
-
-## Cloud Architecture Diagram
+## 🏛️ Cloud Architecture Diagram
 
 ![System Architecture](docs/architecture.svg)
 
-<br>
-
-## Security Measures
+## 🛡️ Security Measures
 
 ### HTTP Method Restriction
 
@@ -137,26 +119,22 @@ The implementation uses:
 
 With such a large number of possible combinations making collisions extremely unlikely, the implementation simply uses a database UNIQUE constraint without any additional collision handling logic.
 
-<br>
-
-## CI/CD
+## 🚀 CI/CD
 
 The project uses GitHub Actions to automate testing and deployment workflows with the following configurations:
 
-### Continuous Integration
+#### Continuous Integration
 
 - Dependency caching using Composer to speed up builds
 - Code quality checks using PHP CS Fixer
 
-### Continuous Deployment
+#### Continuous Deployment
 
 - Secure AWS Authentication using OpenID Connect (short-lived tokens)
 - Minimal IAM permissions to ensure secure cloud role operations
 - AWS Systems Manager (SSM) for secure remote command execution (no direct SSH access or security group changes)
 
-<br>
-
-## How to use
+## 📄 How to use
 
 This project uses Docker for local development, making it easy for anyone to run and test the application on their local machine.
 
@@ -185,11 +163,10 @@ make build
 make up
 
 # Initialize the database
-make db/migrate
-make db/seed
+make migrate
+make seed
 ```
 
 The application will be available at `http://localhost:8080`
-
 
 

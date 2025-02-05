@@ -117,8 +117,6 @@ The implementation uses:
 - 8 characters length for the final hash
 - Total possible combinations: 64⁸ = 281,474,976,710,656
 
-With such a large number of possible combinations making collisions extremely unlikely, the implementation simply uses a database UNIQUE constraint without any additional collision handling logic.
-
 ## 🚀 CI/CD
 
 The project uses GitHub Actions to automate testing and deployment workflows with the following configurations:

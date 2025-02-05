@@ -20,34 +20,20 @@ down:
 clean:
 	$(COMPOSE) down --remove-orphans --volumes --rmi all
 
-codegen/migrate:
-	@if [ -z "$(name)" ]; then \
-		echo "Usage: make codegen/migrate name=YourMigrationName"; \
-		exit 1; \
-	fi
-	$(COMPOSE) exec php php $(CONSOLE) codegen migration --name $(name)
-
-codegen/seeder:
-	@if [ -z "$(name)" ]; then \
-		echo "Usage: make codegen/seeder name=YourSeederName"; \
-		exit 1; \
-	fi
-	$(COMPOSE) exec php php $(CONSOLE) codegen seeder --name $(name)
-
-db/fresh:
+db/reset:
 	$(COMPOSE) exec mysql mysql -u$(DATABASE_USER) -p$(DATABASE_USER_PASSWORD) $(DATABASE_NAME) -e "TRUNCATE TABLE $(TABLE_NAME);"
 
-db/migrate:
+migrate:
 	$(COMPOSE) exec php php $(CONSOLE) migrate --init
 
-db/rollback:
+rollback:
 	@if [ -z "$(steps)" ]; then \
 			$(COMPOSE) exec php php $(CONSOLE) migrate --rollback; \
 	else \
 			$(COMPOSE) exec php php $(CONSOLE) migrate --rollback $(steps); \
 	fi
 
-db/seed:
+seed:
 	$(COMPOSE) exec php php $(CONSOLE) seed
 
 nginx/reload:

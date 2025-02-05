@@ -107,7 +107,7 @@ Examples:
   php console seed --class UserSeeder
 ```
 
-## Implementation Details
+## How it works
 
 The `migrations` table works as a stack to manage database migrations and rollbacks. Its structure includes the following columns:
 - `id`: Auto-incrementing primary key

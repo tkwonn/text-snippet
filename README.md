@@ -55,7 +55,7 @@ https://github.com/user-attachments/assets/06f831ea-99c5-436a-a176-6b422752ac2b
 
 ## 🛡️ Security Measures
 
-### HTTP Method Restriction
+#### 1. HTTP Method Restriction
 
 The application checks content size before submission. If the content size exceeds the limit, the application will return an error message. This feature prevents users from submitting excessively large content.
 
@@ -71,13 +71,13 @@ max_execution_time = 30
 
 For testing, `post_max_size` was intentionally set to a low limit (2KB) to verify the validation functionality. In production, the limit is set to 8MB to accommodate larger code snippets while still protecting against potential abuse.
 
-### Input Sanitization and Character Escaping
+#### 2. Input Sanitization and Character Escaping
 
 - Special characters (`\n`, `\t`, `\'`, `\"`, `\`) are properly escaped/unescaped using PHP's `json_encode()` and `json_decode()` methods.
 - All database inputs are parameterized using `mysqli` prepared statements to prevent SQL injection.
 - HTML special characters are escaped using `htmlspecialchars()` when displaying titles and metadata.
 
-### Rate Limiting for DoS Protection
+#### 3. Rate Limiting for DoS Protection
 
 The application limits requests based on the client's IP address. 
 
@@ -107,7 +107,7 @@ For testing, the rate limit was intentionally set to a low value (2 requests per
 
 https://github.com/user-attachments/assets/b9840b95-15ae-49cd-9e4b-5991fbc897ec
 
-### Secure URL generation
+#### 4. Secure URL generation
 
 Each paste's URL (`https://{domain}/{hash_id}`) is generated using a cryptographically secure random ID via PHP's `random_bytes()` function.  
 This implementation follows [Latacora's Cryptographic Right Answers](https://www.latacora.com/blog/2018/04/03/cryptographic-right-answers/) and utilizes `/dev/urandom`.

@@ -33,17 +33,18 @@ https://github.com/user-attachments/assets/06f831ea-99c5-436a-a176-6b422752ac2b
 
 ## 🏗️ Built with
 
-| **Category** | **Technology**                                                                                         |
-|--------------|--------------------------------------------------------------------------------------------------------|
-| VM           | Amazon EC2                                                                                             |
-| Web server   | Nginx                                                                                                  |
-| Frontend     | HTML, JavaScript, Bootstrap CSS                                                                        |
-| Backend      | PHP 8.3                                                                                                |
-| Database     | Amazon RDS (MySQL 8.0)                                                                                 |
-| Middleware   | [Custom-built migration tool](https://github.com/tkwonn/text-snippet/blob/main/docs/migration-tool.md) |
-| CI/CD        | GitHub Actions                                                                                         |
-| Tools        | Monaco Editor                                                                                          |
-| Container    | Docker (for local development)                                                                    |
+| **Category** | **Technology**                                                                                                        |
+|--------------|-----------------------------------------------------------------------------------------------------------------------|
+| VM           | Amazon EC2                                                                                                            |
+| Web server   | Nginx                                                                                                                 |
+| Frontend     | HTML, JavaScript, Bootstrap CSS                                                                                       |
+| Backend      | PHP 8.3                                                                                                               |
+| Database     | Amazon RDS (MySQL 8.0)                                                                                                |
+| Middleware   | [Custom-built migration tool](https://github.com/tkwonn/text-snippet/blob/main/docs/migration-tool.md)                |
+| CI/CD        | GitHub Actions                                                                                                        |
+| QA/Testing        | - PHP CS Fixer (code formatting) <br> - PHPStan (linter) <br> - PHPUnit (unit testing) |
+| Tools        | Monaco Editor                                                                                                         |
+| Container    | Docker (for local development)                                                                                        |
 
 ## 🗄️ Database Schema
 
@@ -119,18 +120,24 @@ The implementation uses:
 
 ## 🚀 CI/CD
 
-The project uses GitHub Actions to automate testing and deployment workflows with the following configurations:
+This project uses **GitHub Actions** for two separate workflows:
 
-#### Continuous Integration
+### Continuous Integration (CI)
 
-- Dependency caching using Composer to speed up builds
-- Code quality checks using PHP CS Fixer
+Located in [`.github/workflows/ci.yml`](.github/workflows/ci.yml), the **CI** workflow runs on pushes to the `main` branch (and other specified triggers). It:
 
-#### Continuous Deployment
+- Installs and caches dependencies via Composer
+- Performs **PHP CS Fixer** checks for code style
+- Performs **PHPStan** static analysis for code quality
+- Runs **PHPUnit** unit tests to verify functionality
 
-- Secure AWS Authentication using OpenID Connect (short-lived tokens)
-- Minimal IAM permissions to ensure secure cloud role operations
-- AWS Systems Manager (SSM) for secure remote command execution (no direct SSH access or security group changes)
+### Continuous Deployment (CD)
+
+Located in [`.github/workflows/cd.yml`](.github/workflows/cd.yml), the **CD** workflow is triggered automatically **only if the CI workflow succeeds**. It:
+
+- Uses GitHub Actions OpenID Connect to assume a short-lived AWS role
+- Runs commands remotely via **AWS Systems Manager (SSM)** to pull and deploy changes on the EC2 instance (no direct SSH access or security group changes)
+- Updates Composer dependencies on the server and restarts services (PHP-FPM, Nginx)
 
 ## 📄 How to use
 

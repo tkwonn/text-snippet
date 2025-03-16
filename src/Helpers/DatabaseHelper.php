@@ -28,8 +28,8 @@ class DatabaseHelper
      * @throws Exception When failed to execute statement
      */
     public static function create(
-        string $content,
         string $title,
+        string $content,
         string $language,
         int $isPublic,
         string $expiresAt

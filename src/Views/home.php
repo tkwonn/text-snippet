@@ -7,7 +7,7 @@ $pageTitle = 'Text Snippet Sharing Service';
 require __DIR__ . '/layout/header.php';
 ?>
 
-<div class="container-fluid mt-4">
+<div class="container-fluid mt-4 mb-5">
     <div class="row">
         <!-- Left Column: Editor and Settings -->
         <div class="col-lg-9">
@@ -149,7 +149,6 @@ require __DIR__ . '/layout/header.php';
                         throw new Error(errorResponse.error);
                     }
                     const data = await response.json();
-                    console.log(data);
                     window.location.href = `/${data.hash}`;
                 } catch (error) {
                     this._showError(error.message);

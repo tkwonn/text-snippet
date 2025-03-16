@@ -5,7 +5,12 @@ require __DIR__ . '/../vendor/autoload.php';
 use Exceptions\HttpException;
 
 $routes = include '../src/routes.php';
-$path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$requestUri = $_SERVER['REQUEST_URI'];
+if (!is_string($requestUri)) {
+    $requestUri = '';
+}
+$parsed = parse_url($requestUri, PHP_URL_PATH);
+$path = is_string($parsed) ? $parsed : '';
 $path = ltrim($path, '/');
 
 // Look for an exact match first

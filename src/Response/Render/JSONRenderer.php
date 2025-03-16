@@ -6,11 +6,11 @@ use Response\HTTPRenderer;
 
 class JSONRenderer implements HTTPRenderer
 {
-    private array $data;
-
-    public function __construct(array $data)
+    /**
+     * @param array<string, mixed> $data
+     */
+    public function __construct(private array $data)
     {
-        $this->data = $data;
     }
 
     public function getFields(): array

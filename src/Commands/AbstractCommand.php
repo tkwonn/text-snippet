@@ -14,7 +14,12 @@ use Exceptions\CmdLineException;
 abstract class AbstractCommand implements Command
 {
     protected ?string $value;
+
+    /**
+     * @var array<string, bool|string>
+     */
     protected array $argsMap = [];
+
     protected static ?string $alias = null;
     protected static bool $requiredCommandValue = false;
 
@@ -34,6 +39,9 @@ abstract class AbstractCommand implements Command
      */
     private function setUpArgsMap(): void
     {
+        /**
+         * @var array<int, string> $args
+         */
         $args = $GLOBALS['argv'];
         $startIndex = array_search($this->getAlias(), $args);
 
@@ -95,7 +103,8 @@ abstract class AbstractCommand implements Command
             }
         }
 
-        $this->log(json_encode($this->argsMap));
+        $json = json_encode($this->argsMap, JSON_THROW_ON_ERROR);
+        $this->log($json);
     }
 
     public static function getHelp(): string
@@ -105,14 +114,6 @@ abstract class AbstractCommand implements Command
 
         $helpString = sprintf("Command: %s%s\n\n", $commandName, $value);
         $helpString .= sprintf("Description:\n  %s\n", static::getDescription());
-
-        // Why: code-gen command needs command values
-        if (static::isCommandValueRequired()) {
-            $helpString .= "\nValues:\n";
-            foreach (static::getCommandValues() as $value => $description) {
-                $helpString .= sprintf("  %-12s %s\n", $value, $description);
-            }
-        }
 
         $arguments = static::getArguments();
         if (!empty($arguments)) {
@@ -143,7 +144,7 @@ abstract class AbstractCommand implements Command
         return static::$requiredCommandValue;
     }
 
-    public function getCommandValue(): string
+    public function getCommandValue(): bool|string
     {
         return $this->argsMap[static::getAlias()] ?? '';
     }
@@ -162,6 +163,9 @@ abstract class AbstractCommand implements Command
 
     abstract protected static function getExamples(): string;
 
+    /**
+     * @return Argument[]
+     */
     abstract public static function getArguments(): array;
 
     abstract public function execute(): int;

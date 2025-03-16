@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'public/**'
+      - 'composer.json'
+      - 'composer.lock'
+      - '.github/workflows/**'
+
+jobs:
+  build-lint:
+    runs-on: ubuntu-22.04
+
+    env:
+      PHP_VERSION: 8.3
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Use PHP 8.3 🛎
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+
+      - name: Validate composer.json and composer.lock 👀
+        run: composer validate --strict
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache Composer packages 📦
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+            ${{ runner.os }}-
+
+      - name: Install dependencies ⏳
+        run: composer install --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+
+      - name: Run PHP CS Fixer 👀
+        run: vendor/bin/php-cs-fixer fix -v --diff --dry-run
+
+      - name: Run PHPStan 👀
+        run: vendor/bin/phpstan analyse --configuration=phpstan.neon --memory-limit=2048M

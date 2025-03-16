@@ -22,7 +22,7 @@ class UsageException extends \Exception
             "Command not specified\n\n" .
             "Usage:\n" .
             "  php console {command} {command_value} {--option1} {option1_value} ... {--optionN} {optionN_value}\n\n" .
-            static::getAvailableCommands()
+            self::getAvailableCommands()
         );
     }
 
@@ -30,7 +30,7 @@ class UsageException extends \Exception
     {
         return new self(
             "Command '{$command}' not found\n\n" .
-            static::getAvailableCommands()
+            self::getAvailableCommands()
         );
     }
 }

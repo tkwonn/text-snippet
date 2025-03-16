@@ -44,7 +44,10 @@ EXAMPLES;
         $className = $this->getArgumentValue('class');
 
         if ($className) {
-            $this->runSpecificSeeder($className);
+            if (is_bool($className)) {
+                throw new Exception('Seeder class name is required for running a specific seeder.');
+            }
+            $this->runSpecificSeeder((string) $className);
         } else {
             $this->runAllSeeders();
         }

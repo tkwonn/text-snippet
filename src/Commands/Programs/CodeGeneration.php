@@ -26,14 +26,6 @@ class CodeGeneration extends AbstractCommand
 EXAMPLES;
     }
 
-    protected static function getCommandValues(): array
-    {
-        return [
-            'migration' => 'Generate a new database migration file',
-            'seeder' => 'Generate a new database seeder file',
-        ];
-    }
-
     public static function getArguments(): array
     {
         return [
@@ -48,10 +40,16 @@ EXAMPLES;
 
         if ($codeGenType === 'migration') {
             $migrationName = $this->getArgumentValue('name');
-            $this->generateMigrationFile($migrationName);
+            if (is_bool($migrationName)) {
+                throw new \InvalidArgumentException('Migration name is required for generating a file.');
+            }
+            $this->generateMigrationFile((string) $migrationName);
         } elseif ($codeGenType === 'seeder') {
             $seederName = $this->getArgumentValue('name');
-            $this->generateSeederFile($seederName);
+            if (is_bool($seederName)) {
+                throw new \InvalidArgumentException('Seeder name is required for generating a file.');
+            }
+            $this->generateSeederFile((string) $seederName);
         }
 
         return 0;

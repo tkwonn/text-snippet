@@ -2,10 +2,6 @@
     "name": "tk/text-snippet",
     "description": "A simple text snippet sharing service",
     "license": "proprietary",
-    "require": {
-        "friendsofphp/php-cs-fixer": "^3.65",
-        "nesbot/carbon": "^3.8"
-    },
     "autoload": {
         "psr-4": {
             "Commands\\": "src/Commands",
@@ -16,5 +12,13 @@
             "Response\\": "src/Response",
             "Views\\": "src/Views"
         }
+    },
+    "require": {
+        "nesbot/carbon": "^3.8"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.64",
+        "phpstan/phpstan": "^2.1",
+        "phpunit/phpunit": "^11.5"
     }
 }

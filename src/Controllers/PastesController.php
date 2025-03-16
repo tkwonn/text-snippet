@@ -29,27 +29,33 @@ class PastesController
      */
     public function store(): HTTPRenderer
     {
-        $paste = json_decode(file_get_contents('php://input'), true);
-        if (!$paste) {
+        $jsonString = file_get_contents('php://input');
+        if ($jsonString === false) {
+            return new JSONRenderer(['error' => 'Failed to read input']);
+        }
+        $paste = json_decode($jsonString, true);
+        if (!is_array($paste)) {
             return new JSONRenderer(['error' => 'Invalid JSON data']);
         }
 
+        $title = $paste['title'] ?? 'Untitled';
+        $content = $paste['content'] ?? '';
+        $language = $paste['language'] ?? 'plaintext';
+        $isPublic = $paste['isPublic'] ?? 1;
+        $expiresAt = $paste['expiresAt'] ?? 'Never';
+
         try {
             $result = DatabaseHelper::create(
-                content: $paste['content'],
-                title: $paste['title'] ?? 'Untitled',
-                language: $paste['language'] ?? 'plaintext',
-                isPublic: $paste['isPublic'] ?? 1,
-                expiresAt: $paste['expiresAt'] ?? 'Never',
+                title:     $title,
+                content:   $content,
+                language:  $language,
+                isPublic:  $isPublic,
+                expiresAt: $expiresAt,
             );
 
-            return new JSONRenderer(
-                ['hash' => $result['hash']],
-            );
+            return new JSONRenderer(['hash' => $result['hash']]);
         } catch (Exception $e) {
-            return new JSONRenderer(
-                ['error' => $e->getMessage()],
-            );
+            return new JSONRenderer(['error' => $e->getMessage()]);
         }
     }
 
@@ -58,12 +64,16 @@ class PastesController
      */
     public function show(string $hash): HTTPRenderer
     {
-        $paste = DatabaseHelper::findByHash($hash);
+        try {
+            $paste = DatabaseHelper::findByHash($hash);
 
-        if (isset($paste['expired']) && $paste['expired']) {
-            return new HTMLRenderer('expired');
+            if (isset($paste['expired']) && $paste['expired']) {
+                return new HTMLRenderer('expired');
+            }
+
+            return new HTMLRenderer('paste', ['paste' => $paste]);
+        } catch (Exception $e) {
+            return new JSONRenderer(['error' => $e->getMessage()]);
         }
-
-        return new HTMLRenderer('paste', ['paste' => $paste]);
     }
 }

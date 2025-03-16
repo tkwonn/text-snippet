@@ -101,11 +101,16 @@ EXAMPLES;
 
         $lastMigration = $this->getLastMigration();
         $allMigrations = $this->getAllMigrationFiles('asc');
-        /*
-         * If a previous migration was found in the database, start from the next migration in the list.
-         * Otherwise, begin with the first migration file (index 0).
-         */
-        $startIndex = ($lastMigration) ? array_search($lastMigration, $allMigrations) + 1 : 0;
+
+        $pos = array_search($lastMigration, $allMigrations, true);
+        if ($pos === false) {
+            $this->log('No previous migration found. Starting from the beginning.');
+            $startIndex = 0;
+        } else {
+            $this->log('Last migration found: ' . $lastMigration);
+            $this->log('Starting from the next migration...');
+            $startIndex = (int) $pos + 1;
+        }
 
         for ($i = $startIndex; $i < count($allMigrations); $i++) {
             $filename = $allMigrations[$i];
@@ -113,6 +118,7 @@ EXAMPLES;
             include_once $filename;
 
             $migrationClass = $this->getClassnameFromMigrationFilename($filename);
+            /** @var \Database\SchemaMigration $migration */
             $migration = new $migrationClass();
             $this->log(sprintf('Processing up migration for %s', $migrationClass));
             $queries = $migration->up();
@@ -151,10 +157,13 @@ EXAMPLES;
 
         $result = $mysqli->query($query);
 
-        if ($result && $result->num_rows > 0) {
+        if ($result instanceof \mysqli_result && $result->num_rows > 0) {
             $row = $result->fetch_assoc();
+            if (!is_array($row)) {
+                return null;
+            }
 
-            return $row['filename'];
+            return (string) $row['filename'];
         }
 
         return null;
@@ -162,6 +171,7 @@ EXAMPLES;
 
     /**
      * @throws Exception When migrations directory is not found
+     * @return string[]  List of migration files
      */
     private function getAllMigrationFiles(string $order = 'desc'): array
     {
@@ -172,6 +182,9 @@ EXAMPLES;
             throw new Exception('Migrations directory not found or is not a directory: ' . $directory);
         }
         $allFiles = glob($directory . '/*.php');
+        if ($allFiles === false) {
+            throw new Exception('Failed to read migration files from directory: ' . $directory);
+        }
 
         usort($allFiles, function ($a, $b) use ($order) {
             $compareResult = strcmp($a, $b);
@@ -183,6 +196,7 @@ EXAMPLES;
     }
 
     /**
+     * @param  string[]  $queries
      * @throws Exception When query failed
      */
     private function processQueries(array $queries): void
@@ -247,8 +261,8 @@ EXAMPLES;
             include_once $filename;
 
             $migrationClass = $this->getClassnameFromMigrationFilename($filename);
+            /** @var \Database\SchemaMigration $migration */
             $migration = new $migrationClass();
-
             $queries = $migration->down();
             if (empty($queries)) {
                 throw new Exception('Must have queries to run for . ' . $migrationClass);

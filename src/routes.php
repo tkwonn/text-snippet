@@ -1,26 +1,28 @@
 <?php
 
+use Controllers\HomeController;
 use Controllers\PastesController;
+use Exceptions\HttpException;
 use Response\HTTPRenderer;
-use Response\Render\HTMLRenderer;
-use Response\Render\JSONRenderer;
 
 return [
     '' => function (): HTTPRenderer {
-        return new HTMLRenderer('home');
+        $homeController = new HomeController();
+
+        return $homeController->index();
     },
     'api/pastes' => function (): HTTPRenderer {
-        $controller = new PastesController();
+        $pastesController = new PastesController();
 
         return match ($_SERVER['REQUEST_METHOD']) {
-            'GET' => $controller->index(),
-            'POST' => $controller->store(),
-            default => new JSONRenderer(['error' => 'Method Not Allowed']),
+            'GET' => $pastesController->index(),
+            'POST' => $pastesController->store(),
+            default => throw new HttpException(405, 'Must be GET or POST'),
         };
     },
     '[a-zA-Z0-9_-]{8}' => function (string $hash): HTTPRenderer {
-        $controller = new PastesController();
+        $pastesController = new PastesController();
 
-        return $controller->show($hash);
+        return $pastesController->show($hash);
     },
 ];

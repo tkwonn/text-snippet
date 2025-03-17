@@ -1,7 +1,8 @@
 # Text Snippet Sharing Service
 
 [![GitHub last commit](https://img.shields.io/github/last-commit/tkwonn/text-snippet?color=chocolate)](https://github.com/tkwonn/text-snippet/commits/)
-[![deploy to EC2](https://github.com/tkwonn/text-snippet/actions/workflows/deploy.yml/badge.svg)](https://github.com/tkwonn/text-snippet/actions/workflows/deploy.yml)
+[![CI](https://github.com/tkwonn/text-snippet/actions/workflows/ci.yml/badge.svg)](https://github.com/tkwonn/text-snippet/actions/workflows/ci.yml)
+[![deploy to EC2](https://github.com/tkwonn/text-snippet/actions/workflows/cd.yml/badge.svg)](https://github.com/tkwonn/text-snippet/actions/workflows/cd.yml)
 
 ## Table of Contents
 - [About](#-about)

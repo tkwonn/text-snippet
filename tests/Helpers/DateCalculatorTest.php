@@ -2,9 +2,9 @@
 
 namespace Tests\Helpers;
 
-use PHPUnit\Framework\TestCase;
-use Helpers\DateCalculator;
 use Exception;
+use Helpers\DateCalculator;
+use PHPUnit\Framework\TestCase;
 
 class DateCalculatorTest extends TestCase
 {
@@ -50,5 +50,3 @@ class DateCalculatorTest extends TestCase
         DateCalculator::getExpirationDate('invalid_option');
     }
 }
-
-?>

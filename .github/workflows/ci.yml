@@ -11,7 +11,7 @@ on:
       - '.github/workflows/**'
 
 jobs:
-  build-lint:
+  build-lint-test:
     runs-on: ubuntu-22.04
 
     env:

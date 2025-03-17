@@ -50,3 +50,6 @@ jobs:
 
       - name: Run PHPStan 👀
         run: vendor/bin/phpstan analyse --configuration=phpstan.neon --memory-limit=2048M
+
+      - name: Run PHPUnit tests 👀
+        run: vendor/bin/phpunit --colors=always
